@@ -117,6 +117,158 @@ const STEPS = [
   { num: "04", title: "Ishga tushirish", desc: "Tizim ishga tushiriladi va biz 24/7 qo\u02bcllab-quvvatlash xizmati ko\u02bcrsatamiz." },
 ]
 
+const TESTIMONIALS = [
+  {
+    quote: ["Height ERP tizimini ishlatib ko`rdim,man o`zim ishlatib ko`rganlarim ichida Eng yaxshi investitsiya!"],
+    name: "Abdullayev Bobur",
+    role: "Baxtli Savdo MChJ, Direktori",
+    initials: "AB",
+  },
+  {
+    quote: ["Height ERP bizning barcha jarayonlarimizni avtomatlashtirdi. Xodimlar unumdorligi ", "2 barobarga oshdi", " va xarajatlar sezilarli kamaydi."],
+    name: "Karimov Jasur",
+    role: "TechBiznes LLC, Bosh Direktori",
+    initials: "KJ",
+  },
+  {
+    quote: ["Bu ERPni qulayligi ichida ERP bilan SRM yig`ilgani "],
+    name: "Rahimova Dilnoza",
+    role: "Savdo Markazi, Moliya Direktori",
+    initials: "RD",
+  },
+]
+
+function TestimonialCarousel() {
+  const [current, setCurrent] = useState(0)
+  const [phase, setPhase] = useState("idle")
+  const [dir, setDir] = useState("up")
+  const pending = useRef(null)
+
+  const go = useCallback((newIdx, direction) => {
+    if (phase !== "idle") return
+    pending.current = newIdx
+    setDir(direction)
+    setPhase("exit")
+  }, [phase])
+
+  useEffect(() => {
+    if (phase !== "exit") return
+    const t = setTimeout(() => {
+      setCurrent(pending.current)
+      setPhase("enter")
+      requestAnimationFrame(() => requestAnimationFrame(() => setPhase("idle")))
+    }, 260)
+    return () => clearTimeout(t)
+  }, [phase])
+
+  const goNext = useCallback(() => go((current + 1) % TESTIMONIALS.length, "up"), [current, go])
+  const goPrev = useCallback(() => go((current - 1 + TESTIMONIALS.length) % TESTIMONIALS.length, "down"), [current, go])
+
+  useEffect(() => {
+    const id = setInterval(goNext, 5000)
+    return () => clearInterval(id)
+  }, [goNext])
+
+  const t = TESTIMONIALS[current]
+  const contentStyle =
+    phase === "exit"
+      ? { opacity: 0, transform: dir === "up" ? "translateY(-20px)" : "translateY(20px)", transition: "opacity 0.26s ease, transform 0.26s ease" }
+      : phase === "enter"
+        ? { opacity: 0, transform: dir === "up" ? "translateY(20px)" : "translateY(-20px)", transition: "none" }
+        : { opacity: 1, transform: "translateY(0)", transition: "opacity 0.26s ease, transform 0.26s ease" }
+
+  return (
+    <section className="mt-16 rounded-3xl overflow-hidden relative" style={{ background: GRAD }}>
+      <div className="absolute top-0 left-0 w-64 h-64 rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" style={{ background: "radial-gradient(circle,#FFFFFF,transparent)" }} />
+      <div className="absolute bottom-0 right-0 w-48 h-48 rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" style={{ background: "radial-gradient(circle,#7DD3FC,transparent)" }} />
+
+      <div className="relative p-6 sm:p-10 lg:p-12">
+        <div className="text-[80px] leading-none font-serif text-white opacity-10 select-none absolute top-4 left-6 sm:left-8">&ldquo;</div>
+
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-10">
+          {/* LEFT — animated quote */}
+          <div className="flex-1 relative min-w-0">
+            <div style={contentStyle}>
+              <div className="flex gap-1 mb-4 sm:mb-5">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-[18px] sm:text-[22px] font-semibold text-white leading-relaxed mb-6">
+                {t.quote[0]}
+                <span className="font-extrabold text-yellow-300">{t.quote[1]}</span>
+                {t.quote[2]}
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-[15px] border-2 border-white/30" style={{ background: "rgba(255,255,255,0.15)" }}>
+                  {t.initials}
+                </div>
+                <div>
+                  <p className="font-bold text-white text-[15px]">{t.name}</p>
+                  <p className="text-blue-200 text-[13px]">{t.role}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Nav controls */}
+            <div className="flex items-center gap-3 mt-6">
+              <button
+                onClick={goPrev}
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
+                style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}
+              >
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                </svg>
+              </button>
+              <div className="flex gap-2">
+                {TESTIMONIALS.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => go(i, i > current ? "up" : "down")}
+                    className="rounded-full transition-all duration-500 cursor-pointer"
+                    style={{
+                      width: i === current ? "24px" : "8px",
+                      height: "8px",
+                      background: i === current ? "white" : "rgba(255,255,255,0.4)",
+                    }}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={goNext}
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 cursor-pointer"
+                style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}
+              >
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* DIVIDER */}
+          <div className="hidden lg:block w-px h-36 bg-white/15" />
+
+          {/* RIGHT — stats */}
+          <div className="flex flex-row lg:flex-col gap-5 lg:gap-8 w-full lg:w-auto">
+            <div className="flex-1 lg:flex-none text-center">
+              <p className="text-[28px] sm:text-[36px] lg:text-[44px] font-extrabold text-white leading-none">40%</p>
+              <p className="text-blue-200 text-[12px] sm:text-[13px] mt-1">Samaradorlik oshdi</p>
+            </div>
+            <div className="flex-1 lg:flex-none text-center">
+              <p className="text-[28px] sm:text-[36px] lg:text-[44px] font-extrabold text-white leading-none">500+</p>
+              <p className="text-blue-200 text-[12px] sm:text-[13px] mt-1">Muvaffaqiyatli loyiha</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function Carousel() {
   const [current, setCurrent] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -424,11 +576,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {STEPS.map((step, i) => (
               <div key={i} className="relative">
-                {i < STEPS.length - 1 && (
-                  <div className="hidden lg:block absolute top-7 left-[calc(100%-8px)] w-full h-0.5 z-0"
-                    style={{ background: "linear-gradient(90deg,#BFDBFE,transparent)" }} />
-                )}
-                <div className="relative z-10 bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-1" style={{ boxShadow: "0 1px 5px 1px gray, 0 1.5px 6px 0 rgba(14,165,233,0.07)" }}>
                   <div
                     className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 text-white font-extrabold text-[16px] sm:text-[18px] shadow-md"
                     style={{ background: GRAD }}
@@ -443,58 +591,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TESTIMONIAL */}
-        <section className="mt-16 rounded-3xl overflow-hidden relative" style={{ background: GRAD }}>
-          <div className="absolute top-0 left-0 w-64 h-64 rounded-full opacity-10 -translate-x-1/3 -translate-y-1/3 pointer-events-none" style={{ background: "radial-gradient(circle,#FFFFFF,transparent)" }} />
-          <div className="absolute bottom-0 right-0 w-48 h-48 rounded-full opacity-10 translate-x-1/3 translate-y-1/3 pointer-events-none" style={{ background: "radial-gradient(circle,#7DD3FC,transparent)" }} />
-
-          <div className="relative p-6 sm:p-10 lg:p-12">
-            {/* big quote icon */}
-            <div className="text-[80px] leading-none font-serif text-white opacity-10 select-none absolute top-4 left-6 sm:left-8">&ldquo;</div>
-
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-10">
-              {/* LEFT — quote */}
-              <div className="flex-1 relative min-w-0">
-                <div className="flex gap-1 mb-4 sm:mb-5">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-[18px] sm:text-[22px] font-semibold text-white leading-relaxed mb-6">
-                  Height ERP tizimini joriy etgandan so&apos;ng, kompaniyamizning samaradorligi{" "}
-                  <span className="font-extrabold text-yellow-300">40% ga oshdi</span>{" "}
-                  va xarajatlarimiz sezilarli kamaydi. Eng yaxshi investitsiya!
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-[15px] border-2 border-white/30" style={{ background: "rgba(255,255,255,0.15)" }}>
-                    AB
-                  </div>
-                  <div>
-                    <p className="font-bold text-white text-[15px]">Abdullayev Bobur</p>
-                    <p className="text-blue-200 text-[13px]">Baxtli Savdo MChJ, Direktori</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* DIVIDER */}
-              <div className="hidden lg:block w-px h-36 bg-white/15" />
-
-              {/* RIGHT — stats */}
-              <div className="flex flex-row lg:flex-col gap-5 lg:gap-8 w-full lg:w-auto">
-                <div className="flex-1 lg:flex-none text-center rounded-2xl py-4 px-5 lg:p-0 lg:rounded-none lg:bg-transparent" style={{ background: "rgba(255,255,255,0.07)" }}>
-                  <p className="text-[28px] sm:text-[36px] lg:text-[44px] font-extrabold text-white leading-none">40%</p>
-                  <p className="text-blue-200 text-[12px] sm:text-[13px] mt-1">Samaradorlik oshdi</p>
-                </div>
-                <div className="flex-1 lg:flex-none text-center rounded-2xl py-4 px-5 lg:p-0 lg:rounded-none lg:bg-transparent" style={{ background: "rgba(255,255,255,0.07)" }}>
-                  <p className="text-[28px] sm:text-[36px] lg:text-[44px] font-extrabold text-white leading-none">500+</p>
-                  <p className="text-blue-200 text-[12px] sm:text-[13px] mt-1">Muvaffaqiyatli loyiha</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <TestimonialCarousel />
       </Container>
       {/* CONTACT */}
       <section
