@@ -390,7 +390,7 @@ export default function Home() {
                   Bepul konsultatsiya
                 </a>
                 <a
-                  href="https://t.me/Height_IT"
+                  href="http://77.83.206.97:8080/dashboard/sklad/warehouse/purchases"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-[15px] border-2 border-[#2563EB] text-[#2563EB] transition-all duration-300 hover:bg-[#2563EB] hover:text-white hover:-translate-y-0.5"
