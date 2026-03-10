@@ -296,43 +296,45 @@ function Carousel() {
   }, [next])
 
   return (
-    <div className="relative w-full lg:w-150 xl:w-170 shrink-0 mt-4 lg:mt-8 rounded-2xl overflow-hidden shadow-2xl group">
-      {CAROUSEL_IMAGES.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt={`ERP screenshot ${i + 1}`}
-          className="w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-[800ms] ease-in-out"
-          style={{
-            opacity: i === current && !isTransitioning ? 1 : 0,
-            position: i === 0 ? "relative" : "absolute",
-            pointerEvents: i === current ? "auto" : "none",
-          }}
-        />
-      ))}
+    <div className="relative w-full lg:w-150 xl:w-170 shrink-0 mt-4 lg:mt-8 group lg:mx-10">
+      <div className="rounded-2xl overflow-hidden shadow-2xl">
+        {CAROUSEL_IMAGES.map((img, i) => (
+          <img
+            key={i}
+            src={img}
+            alt={`ERP screenshot ${i + 1}`}
+            className="w-full h-auto object-cover absolute top-0 left-0 transition-opacity duration-[800ms] ease-in-out"
+            style={{
+              opacity: i === current && !isTransitioning ? 1 : 0,
+              position: i === 0 ? "relative" : "absolute",
+              pointerEvents: i === current ? "auto" : "none",
+            }}
+          />
+        ))}
+      </div>
 
       {/* <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none rounded-2xl" /> */}
 
       <button
         onClick={prev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-        style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(6px)" }}
+        className="hidden lg:flex absolute -left-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer shadow-xl"
+        style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(6px)" }}
       >
-        <svg className="w-4 h-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-3.5 h-3.5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={next}
-        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
-        style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(6px)" }}
+        className="hidden lg:flex absolute -right-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer shadow-xl"
+        style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(6px)" }}
       >
-        <svg className="w-4 h-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-3.5 h-3.5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 1 }}>
         {CAROUSEL_IMAGES.map((_, i) => (
           <button
             key={i}
