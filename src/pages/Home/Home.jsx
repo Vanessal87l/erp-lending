@@ -119,19 +119,19 @@ const STEPS = [
 
 const TESTIMONIALS = [
   {
-    quote: ["Height ERP tizimini ishlatib ko`rdim,man o`zim ishlatib ko`rganlarim ichida Eng yaxshi investitsiya!"],
+    quote: ["Height ERP tizimini ishlatib ko`rdim,man o`zim ishlatib ko`rganlarim ichida eng yaxshi investitsiya bo`ldi."],
     name: "Abdullayev Bobur",
     role: "Baxtli Savdo MChJ, Direktori",
     initials: "AB",
   },
   {
-    quote: ["Height ERP bizning barcha jarayonlarimizni avtomatlashtirdi. Xodimlar unumdorligi ", "2 barobarga oshdi", " va xarajatlar sezilarli kamaydi."],
+    quote: ["Bu ERPni ishlatib ko`rshingizga tavsiya berama.Ishlatib ko`rib o`ziz qulayliklarini testing qilib ko`ring!. "],
     name: "Karimov Jasur",
     role: "TechBiznes LLC, Bosh Direktori",
     initials: "KJ",
   },
   {
-    quote: ["Bu ERPni qulayligi ichida ERP bilan SRM yig`ilgani "],
+    quote: ["Bu ERPni qulayligi ichida ERP bilan SRM yig`ilgani bo`ldi,o`zim uchun juda qulay bo`ldi.Minusi esa man buni vohliro ko`rmaganim,hisob-kitob bilan qynalib yurgandim."],
     name: "Rahimova Dilnoza",
     role: "Savdo Markazi, Moliya Direktori",
     initials: "RD",
