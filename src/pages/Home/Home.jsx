@@ -296,8 +296,8 @@ function Carousel() {
   }, [next])
 
   return (
-    <div className="relative w-full lg:w-150 xl:w-170 shrink-0 mt-4 lg:mt-8 group lg:mx-10">
-      <div className="rounded-2xl overflow-hidden shadow-2xl">
+    <div className="relative w-full lg:w-[460px] xl:w-[580px] shrink-0 mt-4 lg:mt-8 group lg:ml-10 rounded-2xl">
+      <div className="rounded-2xl overflow-hidden">
         {CAROUSEL_IMAGES.map((img, i) => (
           <img
             key={i}
@@ -315,38 +315,63 @@ function Carousel() {
 
       {/* <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none rounded-2xl" /> */}
 
+      {/* Side arrows — desktop only, visible on hover */}
       <button
         onClick={prev}
-        className="hidden lg:flex absolute -left-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer shadow-xl"
-        style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(6px)" }}
+        className="hidden lg:flex absolute -left-12 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full items-center justify-center transition-all duration-200 hover:scale-110 cursor-pointer shadow-xl opacity-0 group-hover:opacity-100"
+        style={{ background: GRAD }}
       >
-        <svg className="w-3.5 h-3.5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       <button
         onClick={next}
-        className="hidden lg:flex absolute -right-12 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer shadow-xl"
-        style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(6px)" }}
+        className="hidden lg:flex absolute -right-12 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full items-center justify-center transition-all duration-200 hover:scale-110 cursor-pointer shadow-xl opacity-0 group-hover:opacity-100"
+        style={{ background: GRAD }}
       >
-        <svg className="w-3.5 h-3.5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2" style={{ zIndex: 1 }}>
-        {CAROUSEL_IMAGES.map((_, i) => (
+      {/* Bottom controls: dots left, arrows right — arrows only on mobile */}
+      <div className="flex justify-between items-center mt-24">
+        <div className="flex gap-2 items-center">
+          {CAROUSEL_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="rounded-full transition-all duration-500 cursor-pointer"
+              style={{
+                width: i === current ? "24px" : "8px",
+                height: "8px",
+                background: i === current ? "#2563EB" : "rgba(37,99,235,0.3)",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="lg:hidden flex gap-2">
           <button
-            key={i}
-            onClick={() => goTo(i)}
-            className="rounded-full transition-all duration-500 cursor-pointer"
-            style={{
-              width: i === current ? "24px" : "8px",
-              height: "8px",
-              background: i === current ? "#2563EB" : "rgba(255,255,255,0.6)",
-            }}
-          />
-        ))}
+            onClick={prev}
+            className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer shadow-md flex-shrink-0 transition-transform duration-200 hover:scale-110"
+            style={{ background: GRAD }}
+          >
+            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={next}
+            className="w-8 h-8 rounded-full flex items-center justify-center cursor-pointer shadow-md flex-shrink-0 transition-transform duration-200 hover:scale-110"
+            style={{ background: GRAD }}
+          >
+            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   )
@@ -407,7 +432,7 @@ export default function Home() {
         </header>
 
         {/* STATS */}
-        <section className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <section className="mt-10 sm:mt-14 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {STATS.map((s, i) => (
             <div
               key={i}
@@ -464,7 +489,7 @@ export default function Home() {
           <div className="relative flex flex-col lg:flex-row gap-0">
             {/* LEFT */}
             <div className="flex-1 p-7 sm:p-10 lg:p-12">
-              <span className="inline-block px-4 py-2 rounded-full text-[11px] font-bold tracking-widest uppercase mb-5  text-white" style={{ background: "rgba(255,255,255,0.1)" }}>
+              <span className="inline-block px-4 py-2 rounded-full text-[11px] font-bold tracking-widest uppercase mb-5 text-white" style={{ background: "rgba(255,255,255,0.1)" }}>
                 Tizim haqida
               </span>
               <h2 className="text-[26px] sm:text-[34px] font-extrabold text-white leading-tight mb-4">
@@ -575,10 +600,10 @@ export default function Home() {
             </h2>
             <p className="text-gray-500 mt-3 text-[13px] sm:text-[15px] px-2">Atigi 4 qadam bilan biznesingizni raqamlashtirishni boshlang</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
             {STEPS.map((step, i) => (
               <div key={i} className="relative">
-                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-1" style={{ boxShadow: "0 1px 5px 1px gray, 0 1.5px 6px 0 rgba(14,165,233,0.07)" }}>
+                <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
                   <div
                     className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center mb-4 text-white font-extrabold text-[16px] sm:text-[18px] shadow-md"
                     style={{ background: GRAD }}
@@ -618,7 +643,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative px-5 sm:px-10 lg:px-14 py-8 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <div className="relative px-5 sm:px-10 lg:px-14 py-8 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           <a
             href="tel:+998931121575"
             className="group flex flex-col items-center gap-4 rounded-2xl p-5 sm:p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
